@@ -11,5 +11,5 @@ npm packages: express, express-handlebars, mongoose, cheerio, axios
 
 
 
-Deployment link: 
+Deployment version: 
 Professional Portfolio Link: https://mangama.github.io/Professional_Portfolio/
