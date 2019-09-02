@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Scraping News With Mongoose</title>
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/superhero/bootstrap.min.css">
+	<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro&display=swap" rel="stylesheet">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	{{!-- <link rel="stylesheet" href="/styles/styles.css" media="screen" title="no title" charset="utf-8"> --}}
+	<link rel="stylesheet" href="/css/style.css" type="text/css" />
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+<body>
+	<header>
+		<a href="/">
+			<div id="sitename">New York Times
+				Scraper</div>
+		</a>
+		<a href="/"><button id="all-articles">Home</button></a>
+		<a href="/saved"><button id="saved-articles">Saved Articles</button></a>
+		<form action="/scrape" method="GET">
+			<button type="submit" id="refresh-articles">Scrape New Articles</button>
+		</form>
+		{{!-- <form action="/search" method="POST">
+			<button type="submit" id="search-submit">Submit</button>
+			<input type="text" name="search" placeholder="Search for articles" id="search-input">
+		</form> --}}
+	</header>
+	<img id="cover" src="images/cover.jpg" height="500px">
+	<div id="container">
+		{{{ body }}}
+	</div>
+
+	<script src="/javascript/app.js"></script>
+
+	<div id="addnote">
+		<div id="note-displayer">
+			{{!-- <h2>Note</h2>
+			<h3>Article: <span id="article-title"></span></h3> --}}
+			<div id="note">
+				<label for="note-title">Title</label><br>
+				<input type="text" placeholder="Title" name="title" id="note-title"><br>
+				<label for="note-body">Note</label><br>
+				<textarea rows="7" placeholder="Note" id="note-body"></textarea><br>
+				<button type="submit" id="add-note">Save Note</button>
+				<button type="button" id="close-note">Cancel</button>
+			</div>
+		</div>
+	</div>
+
+	<footer>© Copyright Christelle Mangama</footer>
+	<script src="/javascript/app.js"></script>
+</body>
+
+</html>

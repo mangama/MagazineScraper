@@ -16,6 +16,28 @@ var ArticleSchema = new Schema({
     type: String,
     required: true
   },
+  summary: {
+    type: String,
+    required: true,
+    default: "The summary is unavailble at this time."
+  },
+ 
+  img: {
+  	type: String,
+  	// default: "/assets/images/unavailable.jpg"
+  },
+  issaved: {
+    type: Boolean,
+    default: false
+  },
+  status: {
+    type: String,
+    default: "Save Article"
+  },
+  created: {
+    type: Date,
+    default: Date.now
+  },
   // `note` is an object that stores a Note id
   // The ref property links the ObjectId to the Note model
   // This allows us to populate the Article with an associated Note
@@ -25,8 +47,11 @@ var ArticleSchema = new Schema({
   }
 });
 
+ArticleSchema.index({ title: "text" });
 // This creates our model from the above schema, using mongoose's model method
 var Article = mongoose.model("Article", ArticleSchema);
-
 // Export the Article model
 module.exports = Article;
+
+
+

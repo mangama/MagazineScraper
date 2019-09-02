@@ -1,131 +1,161 @@
 var express = require("express");
-// var logger = require("morgan");
+var method = require("method-override");
 var mongoose = require("mongoose");
-
-// Our scraping tools
-// Axios is a promised-based http library, similar to jQuery's Ajax method
-// It works on the client and on the server
-var axios = require("axios");
+var request = require("request");
 var cheerio = require("cheerio");
+var exphbs = require("express-handlebars");
+mongoose.set('useNewUrlParser', true);
+mongoose.set('useFindAndModify', false);
+mongoose.set('useCreateIndex', true);
 
-// Require all models
-var db = require("./models");
+// Models
+var Note = require("./models/Note");
+var Article = require("./models/Article");
+var databaseUrl = 'mongodb://localhost/news-scraperdb';
 
+var app = express();
 var PORT = 3000;
 
-// Initialize Express
-var app = express();
-
-// Configure middleware
-
-// Use morgan logger for logging requests
-// app.use(logger("dev"));
-// Parse request body as JSON
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-// Make public a static folder
+// App
+app.use(express.urlencoded({ extended: false }));
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+app.use(method("_method"));
 app.use(express.static("public"));
 
-// Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/news-scraperdb", { useNewUrlParser: true });
-
-// Routes
-
-// A GET route for scraping the echoJS website
-app.get("/scrape", function (req, res) {
-  // First, we grab the body of the html with axios
-  console.log("Testing");
-  axios.get("https://www.nytimes.com/section/magazine").then(function (response) {
-    // Then, we load that into cheerio and save it to $ for a shorthand selector
-    var $ = cheerio.load(response.data);
-
-    // Now, we grab every h2 within an article tag, and do the following:
-    $("article div").each(function (i, element) {
-      // Save an empty result object
-      var result = {};
-
-      // Add the text and href of every link, and save them as properties of the result object
-      result.title = $(this)
-        .children("h2").children("a")
-        .text();
-      result.link = "https://www.nytimes.com" + $(this)
-        .children("h2").children("a")
-        .attr("href");
-      result.summary = $(this)
-        .children("p")
-        .text();
-
-      console.log(result);
-
-
-      // Create a new Article using the `result` object built from scraping
-      db.Article.create(result)
-        .then(function(dbArticle) {
-          // View the added result in the console
-          console.log(dbArticle);
-        })
-        .catch(function(err) {
-          // If an error occurred, log it
-          console.log(err);
-        });
-    });
-
-    // Send a message to the client
-    res.send("Scrape Complete");
-  });
+//Mongoose
+mongoose.set('useCreateIndex', true)
+mongoose.connect(databaseUrl, { useNewUrlParser: true })
+mongoose.Promise = Promise;
+var db = mongoose.connection;
+db.on("error", function (error) {
+	console.log("Mongoose Error: ", error);
 });
-
-// Route for getting all Articles from the db
-app.get("/articles", function (req, res) {
-  // Grab every document in the Articles collection
-  db.Article.find({})
-    .then(function (dbArticle) {
-      // If we were able to successfully find Articles, send them back to the client
-      res.json(dbArticle);
-    })
-    .catch(function (err) {
-      // If an error occurred, send it to the client
-      res.json(err);
-    });
-});
-
-// Route for grabbing a specific Article by id, populate it with it's note
-app.get("/articles/:id", function (req, res) {
-  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
-  db.Article.findOne({ _id: req.params.id })
-    // ..and populate all of the notes associated with it
-    .populate("note")
-    .then(function (dbArticle) {
-      // If we were able to successfully find an Article with the given id, send it back to the client
-      res.json(dbArticle);
-    })
-    .catch(function (err) {
-      // If an error occurred, send it to the client
-      res.json(err);
-    });
-});
-
-// Route for saving/updating an Article's associated Note
-app.post("/articles/:id", function (req, res) {
-  // Create a new note and pass the req.body to the entry
-  db.Note.create(req.body)
-    .then(function (dbNote) {
-      // If a Note was created successfully, find one Article with an `_id` equal to `req.params.id`. Update the Article to be associated with the new Note
-      // { new: true } tells the query that we want it to return the updated User -- it returns the original by default
-      // Since our mongoose query returns a promise, we can chain another `.then` which receives the result of the query
-      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, { new: true });
-    })
-    .then(function (dbArticle) {
-      // If we were able to successfully update an Article, send it back to the client
-      res.json(dbArticle);
-    })
-    .catch(function (err) {
-      // If an error occurred, send it to the client
-      res.json(err);
-    });
+db.once("open", function () {
+	console.log("Mongoose connection successful.");
 });
 
 // Start the server
 app.listen(PORT, function () {
-  console.log("App running on port " + PORT + "!");
+	console.log("App running on port " + PORT + "!");
 });
+
+// All routes
+
+app.get("/", function (req, res) {
+	Article.find({}, null, { sort: { created: -1 } }, function (err, data) {
+		if (data.length === 0) {
+			res.render("placeholder", { message: "There's nothing scraped yet. Please click \"Scrape New Articles\" for articles." });
+		}
+		else {
+			res.render("index", { articles: data });
+		}
+	});
+});
+
+app.get("/scrape", function (req, res) {
+	request("https://www.nytimes.com/section/magazine", function (error, response, html) {
+		var $ = cheerio.load(html);
+		var result = {};
+		// console.log("before loop")
+		$("article").each(function (i, element) {
+			var link = $(element).find("div").find("h2 a").attr("href");
+			var title = $(element).find("div").find("h2 a").text().trim();
+			var summary = $(element).find("div").find("p").text().trim();
+			var img = $(element).find("figure a").find("img").attr("src");
+			result.link = "https://www.nytimes.com/section/magazine" + link;
+			result.title = title;
+			if (summary) {
+
+				result.summary = summary;
+			} else {
+				"There is no summary available for this article";
+			};
+			if (img) {
+				result.img = img;
+				// console.log("image");
+			} else {
+				result.img = $(element).find("figure a").find("img").attr("src");
+			};
+
+			console.log(result);
+			var entry = new Article(result);
+			Article.find({ title: result.title }, function (err, data) {
+				if (data.length === 0) {
+					entry.save(function (err, data) {
+						if (err) throw err;
+					});
+				}
+			});
+
+		});
+		console.log("Scrape finished.");
+		res.redirect("/");
+	});
+
+	//Takes you to the list of all the saved article(s)
+	app.get("/saved", function (req, res) {
+		Article.find({ issaved: true }, null, { sort: { created: -1 } }, function (err, data) {
+			if (data.length === 0) {
+				res.render("placeholder", { message: "You have not saved any articles yet." });
+			}
+			else {
+				res.render("saved", { saved: data });
+			}
+		});
+	});
+
+	app.get("/:id", function (req, res) {
+		Article.findById(req.params.id, function (err, data) {
+			res.json(data);
+		})
+	})
+
+	// app.post("/search", function (req, res) {
+	// 	console.log(req.body.search);
+	// 	Article.find({ $text: { $search: req.body.search, $caseSensitive: false } }, null, { sort: { created: -1 } }, function (err, data) {
+	// 		console.log(data);
+	// 		if (data.length === 0) {
+	// 			res.render("placeholder", { message: "Nothing has been found. Please try other keywords." });
+	// 		}
+	// 		else {
+	// 			res.render("search", { search: data })
+	// 		}
+	// 	})
+});
+
+app.post("/save/:id", function (req, res) {
+	Article.findById(req.params.id, function (err, data) {
+		if (data.issaved) {
+			Article.findByIdAndUpdate(req.params.id, { $set: { issaved: false, status: "Save Article" } }, { new: true }, function (err, data) {
+				res.redirect("/");
+			});
+		}
+		else {
+			Article.findByIdAndUpdate(req.params.id, { $set: { issaved: true, status: "Saved" } }, { new: true }, function (err, data) {
+				res.redirect("/saved");
+			});
+		}
+	});
+});
+
+app.post("/note/:id", function (req, res) {
+	var note = new Note(req.body);
+	note.save(function (err, doc) {
+		if (err) throw err;
+		Article.findByIdAndUpdate(req.params.id, { $set: { "note": doc._id } }, { new: true }, function (err, newdoc) {
+			if (err) throw err;
+			else {
+				res.send(newdoc);
+			}
+		});
+	});
+});
+
+app.get("/note/:id", function (req, res) {
+	var id = req.params.id;
+	Article.findById(id).populate("note").exec(function (err, data) {
+		res.send(data.note);
+	})
+})
+
