@@ -1,33 +1,17 @@
-{{!-- {{#each saved}}
-<div class="story-body" id={{this._id}}>
-<h2>
-<a href="{{this.link}}" target="_blank">{{this.title}}</a>
-<form action="/save/{{this._id}}" method="POST">
-<button type="submit" class="status" value="{{this.status}}">{{this.status}}</button>
-<button type="button" class="addnote-button" value="{{this._id}}">Edit or add a note</button>
-</form>
-</h2>
-<summary>{{this.summary}}</summary>
-<img class="media" src="{{this.img}}">
-</div>
-{{/each}} --}}
-
-
 {{#each saved}}
 <div class="story-body" id={{this._id}}>
-<h2>
-<a href="{{this.link}}" target="_blank">{{this.title}}</a>
-<form action="/save/{{this._id}}" method="POST">
-<button type="submit" class="status" value="{{this.status}}">{{this.status}}</button>
-{{#unless this.note}}
-<button type="button" class="addnote-button" value="{{this._id}}">Add A Note</button>
-{{/unless}}
-{{#if this.note}}
-<button type="button" class="addnote-button" value="{{this._id}}">Edit Note</button>
-{{/if}}
-</form>
-</h2>
-<summary>{{this.summary}}</summary>
-<img class="media" src="{{this.img}}">
+    <h2>
+        <a href="{{this.link}}" target="_blank">{{this.title}}</a>
+        <form action="/save/{{this._id}}" method="POST">
+            <button type="submit" class="status btn-sm bg-white mr-2" value="{{this.status}}">{{this.status}}</button>
+            <button type="button" class="addnote-button btn-sm bg-white" value="{{this._id}}">Edit or Add a
+                Note</button>
+        </form>
+    </h2>
+    <div class="row">
+    <summary class="col-8">{{this.summary}}</summary>
+    <img class="media col-4" src="{{this.img}}">
+    </div>
 </div>
 {{/each}}
+
