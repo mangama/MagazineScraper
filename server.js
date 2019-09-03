@@ -43,7 +43,7 @@ app.listen(PORT, function () {
 // All routes
 
 app.get("/", function (req, res) {
-	Article.find({}, null, { sort: { created: -1 } }, function (err, data) {
+	Article.find({issaved:false}, null, { sort: { created: -1 } }, function (err, data) {
 		if (data.length === 0) {
 			res.render("placeholder", { message: "There's nothing scraped yet. Please click \"Scrape New Articles\" for articles." });
 		}
@@ -123,22 +123,25 @@ app.post("/save/:id", function (req, res) {
 		}
 		else {
 			Article.findByIdAndUpdate(req.params.id, { $set: { issaved: true, status: "Saved" } }, { new: true }, function (err, data) {
-				res.redirect("/saved");
+				res.redirect("/");
 			});
 		}
 	});
 });
 
 app.post("/note/:id", function (req, res) {
-	var note = new Note(req.body);
-	note.save(function (err, doc) {
-		if (err) throw err;
-		Article.findByIdAndUpdate(req.params.id, { $set: { "note": doc._id } }, { new: true }, function (err, newdoc) {
-			if (err) throw err;
-			else {
-				res.send(newdoc);
-			}
-		});
+	// var note = new Note(req.body);
+	Note.create(req.body).then(function (note) {
+		
+		Article.findByIdAndUpdate(req.params.id, { $set: { "note": note._id } }, { new: true })
+		  .then(function(dbArticle) {
+			// If we were able to successfully update an Article, send it back to the client
+			res.json(dbArticle);
+		  })
+		  .catch(function(err) {
+			// If an error occurred, send it to the client
+			res.json(err);
+		  });
 	});
 });
 

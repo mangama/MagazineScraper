@@ -4,9 +4,10 @@
         <a href="{{this.link}}" target="_blank">{{this.title}}</a>
         <form action="/save/{{this._id}}" method="POST">
             <button type="submit" class="status btn-sm bg-white mr-2" value="{{this.status}}">{{this.status}}</button>
-            <button type="button" class="addnote-button btn-sm bg-white" value="{{this._id}}">Edit or Add a
+             <button type="button" class="addnote-button btn-sm bg-white" value="{{this._id}}">Edit or Add a
                 Note</button>
         </form>
+       
     </h2>
     <div class="row">
     <summary class="col-8">{{this.summary}}</summary>
