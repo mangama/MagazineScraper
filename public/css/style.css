@@ -101,7 +101,7 @@ header button {
 }
 
 .story-body button {
-	display: right;
+	display: inline;
 	/* float: right; */
 	min-width: 100px;
 	background-color: white;
