@@ -266,3 +266,53 @@ footer {
 	opacity: 0.7;
 	z-index: 3;
 }
+
+@media only screen and (max-width:980px) {
+	nav {
+	  margin-right: 5px;
+	}
+  }
+  
+  
+  @media only screen and (max-width: 768px) {
+	.main-section,
+	.sidebar {
+	  max-width: 100%;
+	}
+  
+	main {
+	  overflow: auto;
+	}
+  
+	.work {
+	  /* Box-model */
+	  width: 47%;
+  
+	  /* Positioning */
+	  margin-bottom: 10px;
+	}
+  
+	.work:nth-child(even) {
+	  margin-right: 0;
+	}
+  
+	.work:nth-child(odd) {
+	  float: right;
+	}
+  
+	.auth-image {
+	  width: 50%;
+	}
+  
+	.sidebar {
+	  margin-bottom: 40px;
+	}
+  }
+  
+  @media only screen and (max-width: 640px){
+	#masthead {
+	  /* Positioning */
+	  position: static;
+	  margin-bottom: 20px;
+	}
+  

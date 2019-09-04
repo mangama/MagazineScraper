@@ -118,7 +118,7 @@ app.post("/save/:id", function (req, res) {
 	Article.findById(req.params.id, function (err, data) {
 		if (data.issaved) {
 			Article.findByIdAndUpdate(req.params.id, { $set: { issaved: false, status: "Save Article" } }, { new: true }, function (err, data) {
-				res.redirect("/");
+				res.redirect("/saved");
 			});
 		}
 		else {
