@@ -10,11 +10,11 @@ From the home page of https://evening-shelf-33618.herokuapp.com/, users have a m
 - From the "Home" or "Scrape New Magazines" page users can save magazines.
 - From the "Saved New Magazines," users can add or edit note(s) related to the magazine, and also, have the option of removing it from the list. If there is not a saved magazine, a message will notify the user.
 
-#
+
 Heroku application link: https://evening-shelf-33618.herokuapp.com/ 
-#### 
+##
 Deployment link: https://mangama.github.io/MagazineScraper/
-###
+##
 Github Link: https://github.com/mangama/MagazineScraper
-#### 
+###
 Professional Portfolio Link: https://mangama.github.io/Professional_Portfolio/
