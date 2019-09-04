@@ -94,16 +94,7 @@ app.get("/scrape", function (req, res) {
 	});
 
 	//Takes you to the list of all the saved article(s)
-	app.get("/saved", function (req, res) {
-		Article.find({ issaved: true }, null, { sort: { created: -1 } }, function (err, data) {
-			if (data.length === 0) {
-				res.render("placeholder", { message: "You have not saved any articles yet." });
-			}
-			else {
-				res.render("saved", { saved: data });
-			}
-		});
-	});
+	
 
 	app.get("/:id", function (req, res) {
 		Article.findById(req.params.id, function (err, data) {
@@ -112,6 +103,17 @@ app.get("/scrape", function (req, res) {
 	})
 
 
+});
+
+app.get("/saved", function (req, res) {
+	Article.find({ issaved: true }, null, { sort: { created: -1 } }, function (err, data) {
+		if (data.length === 0) {
+			res.render("placeholder", { message: "You have not saved any articles yet." });
+		}
+		else {
+			res.render("saved", { saved: data });
+		}
+	});
 });
 
 app.post("/save/:id", function (req, res) {
