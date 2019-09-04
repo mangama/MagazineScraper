@@ -72,35 +72,6 @@ header button {
 	opacity: 0.9;
 }
 
-/* #search-input {
-	float: right;
-	padding: 5px;
-	font-size: 15px;
-	min-width: 200px;
-	border-radius: 5px;
-	margin-top: 10px;
-} */
-
-/* #search-submit {
-	float: right;
-	height: 80%;
-	margin-top: 10px;
-	height: 63%;
-	margin-right: 10px;
-} */
-
-/* #sitename {
-	float: left;
-	padding: 15px 11px;
-	height: 100%;
-	/* background-color: #92afcc; */
-	/* background-color: yellow; */
-	font-size: 23px;
-	font-weight: bold;
-	color: #fff;
-	opacity: 0.7; 
-} */
-
 #cover {
 	width: 100%;
 }
@@ -118,7 +89,6 @@ header button {
 	font-size: 23px;
 
 }
-
 .story-body a {
 	float: left;
 	display: block;
@@ -156,13 +126,14 @@ header button {
 	width: 200px;
 }
 
-.message {
+.message h2{
 	width: 100%;
 	border-radius: 5px;
 	box-shadow: 0 0 10px #aaa;
 	margin: auto;
 	text-align: center;
 	padding: 40px 90px;
+	font-size:20px;
 	/* color: #aaa; */
 	color:black;
 	background-color: #fff;
