@@ -82,11 +82,14 @@ header button {
 	min-height: 200px;
 	box-shadow: 0 0 10px #aaa;
 	background-color: #fff;
+	margin-bottom:25px;
+	padding:10px;
 }
 
 .story-body h2 {
 	background-color: #75b8fa;
 	font-size: 23px;
+	padding-left: 10px;
 
 }
 .story-body a {
@@ -98,14 +101,14 @@ header button {
 }
 
 .story-body button {
-	display: inline;
+	display: right;
+	/* float: right; */
 	min-width: 100px;
 	background-color: white;
 	color:black;
 	font-weight: bold;
 	font-size: 16px;
 	border-radius:.1em;
-
 }
 
 .story-body button:hover {
@@ -119,6 +122,7 @@ header button {
 	width: 80%;
 	padding: 0px 20px;
 	color: black;
+	padding-right:50px;
 }
 
 .story-body img {
@@ -220,7 +224,7 @@ header button {
 
 #container {
 	margin-bottom: 200px;
-	padding: 20px;
+	padding: 10px;
 }
 
 footer {
@@ -237,6 +241,11 @@ footer {
 	opacity: 0.7;
 	z-index: 3;
 }
+
+/* div.row {
+	/* padding: 0px 10px 10px 10px; */
+	/* margin-bottom: 10px; */
+} */
 
 @media only screen and (max-width:980px) {
 	nav {
@@ -286,4 +295,5 @@ footer {
 	  position: static;
 	  margin-bottom: 20px;
 	}
-  
+
+	
