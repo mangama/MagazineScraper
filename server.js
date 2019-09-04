@@ -11,10 +11,10 @@ mongoose.set('useCreateIndex', true);
 // Models
 var Note = require("./models/Note");
 var Article = require("./models/Article");
-var databaseUrl = 'mongodb://localhost/news-scraperdb';
+var databaseUrl = process.env.MONGODB_URI || 'mongodb://localhost/news-scraperdb';
 
 var app = express();
-var PORT = 3000;
+var PORT = process.env.PORT || 3000;
 
 // App
 app.use(express.urlencoded({ extended: false }));
