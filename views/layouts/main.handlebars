@@ -47,11 +47,13 @@
 			<h3>Article: <span id="article-title"></span></h3> --}}
 			<div id="note">
 				<label for="note-title">Title</label><br>
-				<input type="text" placeholder="Title" name="title" id="note-title"><br>
+				<input type="text"  name="title" id="note-title"><br>
 				<label for="note-body">Note</label><br>
-				<textarea rows="7" placeholder="Note" id="note-body"></textarea><br>
-				<button type="button" id="add-note">Save Note</button>
-				<button type="button" id="close-note">Cancel</button>
+				<textarea rows="7" id="note-body"></textarea><br>
+				<div class="d-flex justify-content-around">
+				<button type="button" id="add-note" class="btn btn-secondary center"><span class="border border-secondary">Save Note</span></button>
+				<button type="button" id="close-note" class="btn btn-secondary center" ><span class="border border-secondary">Cancel</span></button>
+				</div>
 			</div>
 		</div>
 	</div>

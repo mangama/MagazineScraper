@@ -138,23 +138,26 @@ background-color: #aaa;
 }
 
 #note {
-	padding: 0 20px 20px 20px;
+	padding: 0 15px 15px 15px;
+	border: 10px gray;
 }
 
 #note-displayer {
-	width: 500px;
+	margin-top:280px;
 	background-color: #fff;
 	z-index: 5;
+
 }
 
-#note-displayer h2 {
+#note-displayer h3 {
 	background-color: #3181d3;
 	color: #fff;
 	padding: 0 20px;
 	margin: 0;
+	
 }
 
-#note-displayer h3 {
+#note-displayer h4 {
 	padding: 0 20px;
 	margin: 0;
 	background-color: #93d2f7;
@@ -163,21 +166,18 @@ background-color: #aaa;
 
 #note-displayer label {
 	color: #aaa;
-	font-size: 20px;
+	font-size: 18px;
 	font-weight: bold;
 }
 
 #note-displayer button {
 	min-width: 128px;
-	/* background-color: #77b9fd; */
-	/* color: #fff; */
-	/* color: gray; */
 	color: black;
 	border: 5px gray;
 	font-weight: bold;
-	font-size: 16px;
+	font-size: 14px;
 	margin: 0 10px;
-	border-radius:.1em;
+	border-radius:.2em;
 	
 }
 
@@ -190,13 +190,14 @@ background-color: #aaa;
 
 #note-title {
 	width: 100%;
-	margin: 0 0 10px 0;
+	/* margin: 0 0 10px 0; */
 	padding: 5px;
-	font-size: 15px;
+	font-size: 12px;
 }
 
 #note-body {
 	width: 100%;
+	max-height:200px;;
 	padding: 5px;
 	font-size: 15px;
 }
